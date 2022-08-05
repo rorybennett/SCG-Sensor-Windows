@@ -116,7 +116,7 @@ class IMU:
         Returns:
              norm (float): Float norm value of hte acceleration.
         """
-        norm = None
+        norm = 0.0
         acc = self.acceleration
         if self.acceleration:
             norm = math.sqrt(acc[0] ** 2 + acc[1] ** 2 + acc[2] ** 2)

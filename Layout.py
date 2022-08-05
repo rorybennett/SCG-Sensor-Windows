@@ -22,7 +22,8 @@ class Layout:
              sg.Text(k='-TXT-IMU-ACC-', text='', font=st.FONT_DESCR,
                      pad=((0, 0), (10, 0)), justification='center', expand_x=True)],
             [sg.Text(text='Lines logged: ', font=st.FONT_DESCR, pad=((0, 0), (10, 0))),
-             sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 0), (10, 0)))]
+             sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 0), (10, 0)), justification='center',
+                     expand_x=True)]
         ]
 
         return layout
