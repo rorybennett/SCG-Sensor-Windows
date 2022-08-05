@@ -1,5 +1,7 @@
 """
-Main class for logging accelerations for a heart rate monitor
+Main class for logging accelerations for a heart rate monitor.
+
+todo Add link to logging folder.
 """
 
 import PySimpleGUI as sg
