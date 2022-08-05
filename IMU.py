@@ -5,6 +5,7 @@ by the company. It is also not complete, as some quite basic functionality is mi
 import witmotion as wm
 import time
 import serial.tools.list_ports
+import math
 
 
 def availableComPorts():
@@ -50,7 +51,6 @@ class IMU:
             baudRate (int, optional): Operational baud rate of the IMU. Defaults to 115200.
         """
         self.startTime = time.time()
-        self.callbackCounter = None
         self.imu = None  # Witmotion IMU object
         self.isConnected = False  # Has an IMU object been successfully connected (does not account for callback).
         self.comPort = comPort  # IMU object's COM port
@@ -58,6 +58,10 @@ class IMU:
         self.acceleration = []  # Acceleration returned by IMU
         self.angle = []  # Euler angles returned by IMU
         self.quaternion = []  # Quaternion returned by IMU
+
+        self.loggingFile = None  # Logging file.
+        self.enableLogging = False  # Logging flag.
+        self.linesLogged = 0  # Total lines logged.
 
     def __del__(self):
         """
@@ -79,11 +83,44 @@ class IMU:
 
         if msg_type is wm.protocol.AccelerationMessage:
             self.acceleration = self.imu.get_acceleration()
+            if self.enableLogging:
+                self.loggingFile.write(f'{int(time.time() * 1000)},'
+                                       f'acc[,{self.acceleration[0]},{self.acceleration[1]},{self.acceleration[2]},]\n')
+                self.linesLogged += 1
         elif msg_type is wm.protocol.QuaternionMessage:
             self.quaternion = self.imu.get_quaternion()
-            self.callbackCounter += 1
         elif msg_type is wm.protocol.AngleMessage:
             self.angle = self.imu.get_angle
+
+    def startLogging(self, filePath):
+        """
+        Enable logging. First create and open the required directories and files, then set the logging flag to True.
+        """
+        print(f'Starting logging: {filePath}')
+        self.linesLogged = 0
+        self.loggingFile = open(filePath, 'w')
+        self.enableLogging = True
+
+    def stopLogging(self):
+        """
+        Disable logging. First set logging flag to False, then close logging file.
+        """
+        print(f'Stopping logging. Total lines logged: {self.linesLogged}')
+        self.enableLogging = False
+        self.loggingFile.close()
+
+    def getNorm(self) -> float:
+        """
+        Return the acceleration norm.
+
+        Returns:
+             norm (float): Float norm value of hte acceleration.
+        """
+        norm = None
+        acc = self.acceleration
+        if self.acceleration:
+            norm = math.sqrt(acc[0] ** 2 + acc[1] ** 2 + acc[2] ** 2)
+        return norm
 
     def connect(self) -> bool:
         """
