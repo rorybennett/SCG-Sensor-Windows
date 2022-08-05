@@ -12,9 +12,13 @@ class Layout:
         """
         layout = [
             [sg.Menu(k='-MENU-', menu_definition=self.menu.getMenu())],
-            [sg.Input(k='-INP-FILE-NAME-', expand_x=True)],
-            [sg.Button(k='-BTN-TOGGLE-LOG-', button_text='Start Logging', font=st.FONT_BTN, border_width=3,
-                       pad=((0, 0), (5, 5)), disabled=True)]
+            [sg.Text(text='Enter log file name: ', font=st.FONT_DESCR),
+             sg.Input(k='-INP-FILE-NAME-', size=(20, 1))],
+            [sg.Col(element_justification='c', expand_x=True, layout=[
+                [sg.Button(k='-BTN-TOGGLE-LOG-', button_text='Start Logging', font=st.FONT_BTN, border_width=3,
+                           pad=((0, 0), (5, 5)), disabled=True)]])],
+            [sg.Text(text='Lines logged: ', font=st.FONT_DESCR),
+             sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR)]
         ]
 
         return layout
