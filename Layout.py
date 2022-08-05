@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import styling as st
+import constants as c
 
 
 class Layout:
