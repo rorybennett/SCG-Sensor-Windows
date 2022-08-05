@@ -18,8 +18,11 @@ class Layout:
             [sg.Col(element_justification='c', expand_x=True, layout=[
                 [sg.Button(k='-BTN-TOGGLE-LOG-', button_text='Start Logging', font=st.FONT_BTN, border_width=3,
                            pad=((0, 0), (5, 5)), disabled=True)]])],
-            [sg.Text(text='Lines logged: ', font=st.FONT_DESCR),
-             sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR)]
+            [sg.Text('Acceleration Norm: ', font=st.FONT_DESCR, pad=((0, 0), (10, 0))),
+             sg.Text(k='-TXT-IMU-ACC-', text='', font=st.FONT_DESCR,
+                     pad=((0, 0), (10, 0)), justification='center', expand_x=True)],
+            [sg.Text(text='Lines logged: ', font=st.FONT_DESCR, pad=((0, 0), (10, 0))),
+             sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 0), (10, 0)))]
         ]
 
         return layout
