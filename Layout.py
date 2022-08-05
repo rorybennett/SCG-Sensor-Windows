@@ -20,9 +20,9 @@ class Layout:
                            pad=((0, 0), (5, 5)), disabled=True)]])],
             [sg.Text('Acceleration Norm: ', font=st.FONT_DESCR, pad=((0, 0), (10, 0))),
              sg.Text(k='-TXT-IMU-ACC-', text='', font=st.FONT_DESCR,
-                     pad=((0, 0), (10, 0)), justification='center', expand_x=True)],
+                     pad=((0, 10), (10, 0)), justification='right', expand_x=True)],
             [sg.Text(text='Lines logged: ', font=st.FONT_DESCR, pad=((0, 0), (10, 0))),
-             sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 0), (10, 0)), justification='center',
+             sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 10), (10, 0)), justification='right',
                      expand_x=True)]
         ]
 

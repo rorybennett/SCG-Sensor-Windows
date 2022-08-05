@@ -8,6 +8,7 @@ import IMU
 import Layout
 import Menu
 import styling as st
+import os
 
 from pathlib import Path
 
@@ -69,8 +70,6 @@ class HeartRateMonitor:
         """
         Toggle the logging state of the IMU object.
         """
-        print(f'Toggle logging: {not self.imu.enableLogging}')
-
         if self.imu.isConnected:
             if not self.imu.enableLogging:
                 logFileName = self.windowMain['-INP-FILE-NAME-'].get()
@@ -78,10 +77,15 @@ class HeartRateMonitor:
                     logFileName = str(int(time.time() * 1000))
                     self.windowMain['-INP-FILE-NAME-'].update(logFileName)
 
+                if self.doesLogFileExist(logFileName):
+                    print(f'{logFileName} exits, appending time.')
+                    logFileName = f'{logFileName}_{int(time.time() * 1000)}'
+
                 self.imu.startLogging(Path(self.loggingPath, logFileName + '.txt'))
             else:
                 self.imu.stopLogging()
                 self.windowMain['-INP-FILE-NAME-'].update('')
+                self.windowMain['-TXT-LINES-LOGGED-'].update(self.imu.linesLogged)
 
             self.windowMain['-BTN-TOGGLE-LOG-'].update(
                 text='Stop Logging' if self.imu.enableLogging else 'Start Logging',
@@ -109,6 +113,16 @@ class HeartRateMonitor:
         self.availableComPorts = IMU.availableComPorts()
         # Set elements
         self.windowImuConnect['-COMBO-COM-PORT-'].update(values=self.availableComPorts)
+
+    def doesLogFileExist(self, fileName):
+        """
+        Check if a log file with the given name already exists.
+        """
+        logFiles = os.listdir(self.loggingPath)
+
+        if fileName + '.txt' in logFiles:
+            return True
+        return False
 
     def showImuConnectWindow(self):
         """
