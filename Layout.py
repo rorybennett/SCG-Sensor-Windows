@@ -1,7 +1,23 @@
 import PySimpleGUI as sg
 import styling as st
 
+
 class Layout:
+    def __init__(self, menu):
+        self.menu = menu
+
+    def getMainLayout(self) -> list:
+        """
+        Create the layout for the main window.
+        """
+        layout = [
+            [sg.Menu(k='-MENU-', menu_definition=self.menu.getMenu())],
+            [sg.Input(k='-INP-FILE-NAME-', expand_x=True)],
+            [sg.Button(k='-BTN-TOGGLE-LOG-', button_text='Start Logging', font=st.FONT_BTN, border_width=3,
+                       pad=((0, 0), (5, 5)), disabled=True)]
+        ]
+
+        return layout
 
     def getImuWindowLayout(self, availableComPorts, comPort, baudRate) -> list:
         """
