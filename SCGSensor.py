@@ -67,7 +67,7 @@ class SCGSensor:
             if self.imu.isConnected:
                 self.windowMain['-TXT-IMU-ACC-'].update(f'{self.imu.getNorm():.2f}')
             if self.imu.enableLogging:
-                self.windowMain['-TXT-LINES-LOGGED-'].update(f'{self.imu.linesLogged}')
+                self.windowMain['-TXT-LINES-LOGGED-'].update(f'{len(self.imu.logData)}')
 
     def toggleLogging(self):
         """
@@ -77,8 +77,8 @@ class SCGSensor:
             if not self.imu.enableLogging:
                 logFileName = self.windowMain['-INP-FILE-NAME-'].get()
                 if logFileName == '':
-                    logFileName = str(int(time.time_ns()))
-                    dt
+                    dt = datetime.fromtimestamp(time.time_ns() / 1000000000)
+                    logFileName = dt.strftime('%d %m %Y %H-%M-%S')
                     self.windowMain['-INP-FILE-NAME-'].update(logFileName)
 
                 if self.doesLogFileExist(logFileName):
@@ -89,7 +89,7 @@ class SCGSensor:
             else:
                 self.imu.stopLogging()
                 self.windowMain['-INP-FILE-NAME-'].update('')
-                self.windowMain['-TXT-LINES-LOGGED-'].update(self.imu.linesLogged)
+                self.windowMain['-TXT-LINES-LOGGED-'].update(len(self.imu.logData))
 
             self.windowMain['-BTN-TOGGLE-LOG-'].update(
                 text='Stop Logging' if self.imu.enableLogging else 'Start Logging',
