@@ -9,7 +9,7 @@ FONT_COMBO = 'Helvetica 14'
 # Font used for Combo boxes with small font.
 FONT_COMBO_SMALL = 'Helvetica 11'
 # Font used for description text.
-FONT_DESCR = 'Helvetica 12'
+FONT_DESCR = 'Helvetica 14'
 # Font used for info text.
 FONT_INFO = 'Helvetica 10'
 # Font used on buttons.

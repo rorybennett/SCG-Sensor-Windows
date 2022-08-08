@@ -33,9 +33,10 @@ class SCGSensor:
         self.bg = None
         self.fig_agg = None
         self.ax = None
-        self.zLine = None
-        self.yLine = None
         self.xLine = None
+        self.yLine = None
+        self.zLine = None
+        self.normLine = None
 
         # IMU object instantiated with default values.
         self.imu = IMU.IMU()
@@ -112,22 +113,44 @@ class SCGSensor:
 
     def updatePlot(self):
         """
-        Update plot and acceleration values.
+        Update plot.
         """
-        self.windowMain['-TXT-IMU-ACC-'].update(f'{self.imu.getNorm():.2f}')
-
         if len(self.imu.plotData) > 0:
             data = np.array(self.imu.plotData)
 
-            self.zLine[0].remove()
-            self.yLine[0].remove()
-            self.xLine[0].remove()
+            data[:, 0] = (data[:, 0] - data[0, 0]) / 1000000000
 
-            self.zLine = self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 3], c='green')  # Z
-            self.yLine = self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 2], c='red')  # Y
-            self.xLine = self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 1], c='blue')  # X
+            if self.windowMain['-BOX-ACC-X-'].get():
+                self.xLine[0].remove()
+                self.xLine = self.ax.plot(data[:, 0], data[:, 1], c='blue')  # X
+            else:
+                self.xLine[0].remove()
+                self.xLine = self.ax.plot([], [], c='blue')
+
+            if self.windowMain['-BOX-ACC-Y-'].get():
+                self.yLine[0].remove()
+                self.yLine = self.ax.plot(data[:, 0], data[:, 2], c='red')  # Y
+            else:
+                self.yLine[0].remove()
+                self.yLine = self.ax.plot([], [], c='red')
+
+            if self.windowMain['-BOX-ACC-Z-'].get():
+                self.zLine[0].remove()
+                self.zLine = self.ax.plot(data[:, 0], data[:, 3], c='green')  # Z
+            else:
+                self.zLine[0].remove()
+                self.zLine = self.ax.plot([], [], c='green')
+
+            if self.windowMain['-BOX-ACC-NORM-'].get():
+                self.normLine[0].remove()
+                self.normLine = self.ax.plot(data[:, 0], data[:, 4], c='black')  # Norm
+            else:
+                self.normLine[0].remove()
+                self.normLine = self.ax.plot([], [], c='black')
 
             self.ax.relim()
+            self.ax.legend([self.xLine[0], self.yLine[0], self.zLine[0], self.normLine[0]],
+                           ['X Acceleration', 'Y Acceleration', 'Z Acceleration', 'Acceleration Norm'])
 
             self.fig_agg.draw()
             self.fig_agg.flush_events()
@@ -145,9 +168,10 @@ class SCGSensor:
         self.ax.set_ylabel('Acceleration [m/s^2]')
         self.ax.grid()
 
-        self.zLine = self.ax.plot([], [], color='green')
-        self.yLine = self.ax.plot([], [], color='red')
         self.xLine = self.ax.plot([], [], color='blue')
+        self.yLine = self.ax.plot([], [], color='red')
+        self.zLine = self.ax.plot([], [], color='green')
+        self.normLine = self.ax.plot([], [], color='black')
 
         self.fig_agg = self.drawFigure(fig, self.windowMain['-CANVAS-PLOT-'].TKCanvas)
 
