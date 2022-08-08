@@ -89,12 +89,13 @@ class IMU:
         if msg_type is wm.protocol.AccelerationMessage:
             self.acceleration = self.imu.get_acceleration()
             if self.acceleration:
-                data = [time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2]]
+                data = [time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2], ]
 
                 if self.enableLogging:
                     self.logData.append(data)
 
-                self.plotData.append(data)
+                self.plotData.append(
+                    [data[0], data[1], data[2], data[3], math.sqrt(data[1] ** 2 + data[2] ** 2 + data[3] ** 2)])
 
                 if len(self.plotData) > self.plotSize:
                     del self.plotData[0]
@@ -160,8 +161,10 @@ class IMU:
             self.imu.subscribe(self.__imuCallback)
 
             print(f'Callback subscribed. IMU connected on {self.comPort}!')
-            self.callbackCounter = 0
             self.startTime = time.time()
+
+            self.logData = []
+            self.plotData = []
             successFlag = True
         except Exception as e:
             print(f'Error initialising IMU class object: {e}')
