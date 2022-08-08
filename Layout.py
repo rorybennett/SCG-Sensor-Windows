@@ -11,6 +11,29 @@ class Layout:
         """
         Create the layout for the main window.
         """
+
+        logStartColumn = [
+            [sg.Text(text='Log Start', font=st.FONT_DESCR)],
+            [sg.Text(k='-TXT-LOG-START-', text='--:--:--', font=st.FONT_DESCR, size=(12, 1),
+                     justification='center')]
+        ]
+
+        logEndColumn = [
+            [sg.Text(text='Log End', font=st.FONT_DESCR)],
+            [sg.Text(k='-TXT-LOG-END-', text='--:--:--', font=st.FONT_DESCR, size=(12, 1), justification='center')]
+        ]
+
+        logElapsedColumn = [
+            [sg.Text(text='Elapsed Time', font=st.FONT_DESCR)],
+            [sg.Text(k='-TXT-LOG-ELAPSED-', text='--:--:--', font=st.FONT_DESCR, size=(12, 1),
+                     justification='center')]
+        ]
+
+        logLineColumn = [
+            [sg.Text(text='Lines to Log', font=st.FONT_DESCR)],
+            [sg.Text(k='-TXT-LINES-LOGGED-', text='0', font=st.FONT_DESCR, size=(12, 1), justification='center')]
+        ]
+
         layout = [
             [sg.Col(element_justification='left', layout=[
                 [sg.Menu(k='-MENU-', menu_definition=self.menu.getMenu())],
@@ -24,15 +47,19 @@ class Layout:
                                  pad=(10, 10)),
                      sg.Checkbox(k='-BOX-ACC-NORM-', text='Acceleration Norm', default=True, font=st.FONT_DESCR,
                                  pad=(10, 10))]
-                ])],
-                [sg.HSeparator()],
+                ])]])],
+            [sg.HSeparator()],
+            [sg.Col(element_justification='c', expand_x=True, layout=[
                 [sg.Text(text='Enter log file name: ', font=st.FONT_DESCR, pad=((5, 0), (10, 5))),
                  sg.Input(k='-INP-FILE-NAME-', size=(50, 1), font=st.FONT_DESCR, pad=((5, 0), (10, 5)))],
                 [sg.Button(k='-BTN-TOGGLE-LOG-', button_text='Start Logging', font=st.FONT_BTN, border_width=3,
-                           pad=((5, 0), (10, 5)), disabled=True)],
-                [sg.Text(text='Lines logged: ', font=st.FONT_DESCR, pad=((5, 0), (10, 0))),
-                 sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 10), (10, 0)))]])
-             ]
+                           pad=((5, 0), (10, 5)), disabled=True),
+                 sg.Column(logStartColumn, element_justification='center', pad=(0, 0)),
+                 sg.Column(logEndColumn, element_justification='center', pad=(0, 0)),
+                 sg.Column(logElapsedColumn, element_justification='center', pad=(0, 0)),
+                 sg.Column(logLineColumn, element_justification='center', pad=(0, 0))
+                 ]
+            ])]
         ]
 
         return layout
