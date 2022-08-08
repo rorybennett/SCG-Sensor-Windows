@@ -27,12 +27,11 @@ class Layout:
                 ])],
                 [sg.HSeparator()],
                 [sg.Text(text='Enter log file name: ', font=st.FONT_DESCR, pad=((5, 0), (10, 5))),
-                 sg.Input(k='-INP-FILE-NAME-', size=(40, 1), font=st.FONT_DESCR, pad=((5, 0), (10, 5)))],
+                 sg.Input(k='-INP-FILE-NAME-', size=(50, 1), font=st.FONT_DESCR, pad=((5, 0), (10, 5)))],
                 [sg.Button(k='-BTN-TOGGLE-LOG-', button_text='Start Logging', font=st.FONT_BTN, border_width=3,
                            pad=((5, 0), (10, 5)), disabled=True)],
                 [sg.Text(text='Lines logged: ', font=st.FONT_DESCR, pad=((5, 0), (10, 0))),
-                 sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 10), (10, 0)),
-                         justification='right', expand_x=True)]])
+                 sg.Text(k='-TXT-LINES-LOGGED-', font=st.FONT_DESCR, pad=((0, 10), (10, 0)))]])
              ]
         ]
 
