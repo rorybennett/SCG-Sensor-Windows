@@ -65,6 +65,9 @@ class IMU:
         self.logData = []  # Data to store to log file.
         self.loggingPath = None  # Path to logging file.
 
+        self.plotSize = 1000  # Number of data points to plot.
+        self.plotData = []  # List of data for plotting.
+
     def __del__(self):
         """
         On class object delete the IMU object must be disconnected. This ensures that required connections are closed.
@@ -85,8 +88,16 @@ class IMU:
 
         if msg_type is wm.protocol.AccelerationMessage:
             self.acceleration = self.imu.get_acceleration()
-            if self.enableLogging:
-                self.logData.append([time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2]])
+            if self.acceleration:
+                data = [time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2]]
+
+                if self.enableLogging:
+                    self.logData.append(data)
+
+                self.plotData.append(data)
+
+                if len(self.plotData) > self.plotSize:
+                    del self.plotData[0]
         elif msg_type is wm.protocol.QuaternionMessage:
             self.quaternion = self.imu.get_quaternion()
         elif msg_type is wm.protocol.AngleMessage:

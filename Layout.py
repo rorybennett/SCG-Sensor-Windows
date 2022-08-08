@@ -13,6 +13,7 @@ class Layout:
         """
         layout = [
             [sg.Menu(k='-MENU-', menu_definition=self.menu.getMenu())],
+            [sg.Canvas(k='-CANVAS-PLOT-')],
             [sg.Text(text='Enter log file name: ', font=st.FONT_DESCR),
              sg.Input(k='-INP-FILE-NAME-', size=(20, 1))],
             [sg.Col(element_justification='c', expand_x=True, layout=[

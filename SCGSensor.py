@@ -6,14 +6,18 @@ todo Add link to logging folder.
 
 import PySimpleGUI as sg
 import time
+
+import numpy as np
+
 import IMU
 import Layout
 import Menu
 import styling as st
 import os
-
 from pathlib import Path
 from datetime import datetime
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 class SCGSensor:
@@ -25,6 +29,11 @@ class SCGSensor:
         self.menu = Menu.Menu()
         # Layout object.
         self.layout = Layout.Layout(self.menu)
+        # Plotting variables.
+        self.bg = None
+        self.fig_agg = None
+        self.ax = None
+        self.line = None
 
         # IMU object instantiated with default values.
         self.imu = IMU.IMU()
@@ -36,6 +45,8 @@ class SCGSensor:
         self.windowMain = sg.Window('Heart Rate Monitor', self.layout.getMainLayout(), finalize=True,
                                     use_default_focus=True)
 
+        self.createPlot()
+
         self.run()
 
     def run(self):
@@ -44,7 +55,7 @@ class SCGSensor:
         """
         while True:
 
-            event, values = self.windowMain.read(timeout=20)
+            event, values = self.windowMain.read(timeout=50)
 
             if event in [sg.WIN_CLOSED, 'None']:
                 # On window close clicked.
@@ -65,7 +76,7 @@ class SCGSensor:
                 self.toggleLogging()
 
             if self.imu.isConnected:
-                self.windowMain['-TXT-IMU-ACC-'].update(f'{self.imu.getNorm():.2f}')
+                self.updatePlot()
             if self.imu.enableLogging:
                 self.windowMain['-TXT-LINES-LOGGED-'].update(f'{len(self.imu.logData)}')
 
@@ -96,6 +107,48 @@ class SCGSensor:
                 button_color=st.COL_BTN_ACTIVE if self.imu.enableLogging else sg.DEFAULT_BUTTON_COLOR)
         else:
             print('IMU is not connected.')
+
+    def updatePlot(self):
+        """
+        Update plot and acceleration values.
+        """
+        self.windowMain['-TXT-IMU-ACC-'].update(f'{self.imu.getNorm():.2f}')
+
+        if len(self.imu.plotData) > 0:
+            data = np.array(self.imu.plotData)
+
+            self.ax.lines[0].remove()
+
+            self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 3], c='green')
+
+            self.fig_agg.draw()
+            self.fig_agg.flush_events()
+
+    def createPlot(self):
+        """
+        Instantiate the initial plotting variables.
+        """
+        fig = Figure(figsize=(10, 5), dpi=100)
+        self.ax = fig.add_subplot(111)
+        fig.patch.set_facecolor(sg.DEFAULT_BACKGROUND_COLOR)
+
+        self.ax.set_title('IMU Acceleration')
+        self.ax.set_xlabel('Time [s]')
+        self.ax.set_ylabel('Acceleration [m/s^2]')
+        self.ax.grid()
+
+        self.line = self.ax.plot([], [], color='green')[0]
+
+        self.fig_agg = self.drawFigure(fig, self.windowMain['-CANVAS-PLOT-'].TKCanvas)
+
+    def drawFigure(self, figure, canvas):
+        """
+        Helper function for integrating matplotlib plots with PySimpleGui. Used to draw the initial canvas.
+        """
+        figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+        figure_canvas_agg.draw()
+        figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+        return figure_canvas_agg
 
     def doesLogFileExist(self, fileName):
         """
