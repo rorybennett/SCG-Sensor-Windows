@@ -122,10 +122,10 @@ class SCGSensor:
 
             if self.windowMain['-BOX-ACC-X-'].get():
                 self.xLine[0].remove()
-                self.xLine = self.ax.plot(data[:, 0], data[:, 1], c='blue')  # X
+                self.xLine = self.ax.plot(data[:, 0], data[:, 1], c='darkturquoise')  # X
             else:
                 self.xLine[0].remove()
-                self.xLine = self.ax.plot([], [], c='blue')
+                self.xLine = self.ax.plot([], [], c='darkturquoise')
 
             if self.windowMain['-BOX-ACC-Y-'].get():
                 self.yLine[0].remove()
@@ -136,21 +136,22 @@ class SCGSensor:
 
             if self.windowMain['-BOX-ACC-Z-'].get():
                 self.zLine[0].remove()
-                self.zLine = self.ax.plot(data[:, 0], data[:, 3], c='green')  # Z
+                self.zLine = self.ax.plot(data[:, 0], data[:, 3], c='lime')  # Z
             else:
                 self.zLine[0].remove()
-                self.zLine = self.ax.plot([], [], c='green')
+                self.zLine = self.ax.plot([], [], c='lime')
 
             if self.windowMain['-BOX-ACC-NORM-'].get():
                 self.normLine[0].remove()
-                self.normLine = self.ax.plot(data[:, 0], data[:, 4], c='black')  # Norm
+                self.normLine = self.ax.plot(data[:, 0], data[:, 4], c='magenta')  # Norm
             else:
                 self.normLine[0].remove()
-                self.normLine = self.ax.plot([], [], c='black')
+                self.normLine = self.ax.plot([], [], c='magenta')
 
             self.ax.relim()
             self.ax.legend([self.xLine[0], self.yLine[0], self.zLine[0], self.normLine[0]],
-                           ['X Acceleration', 'Y Acceleration', 'Z Acceleration', 'Acceleration Norm'])
+                           ['X Acceleration', 'Y Acceleration', 'Z Acceleration', 'Acceleration Norm'],
+                           loc='upper right')
 
             self.fig_agg.draw()
             self.fig_agg.flush_events()
@@ -162,16 +163,17 @@ class SCGSensor:
         fig = Figure(figsize=(10, 5), dpi=100)
         self.ax = fig.add_subplot(111)
         fig.patch.set_facecolor(sg.DEFAULT_BACKGROUND_COLOR)
+        self.ax.set_facecolor('black')
 
         self.ax.set_title('IMU Acceleration')
         self.ax.set_xlabel('Time [s]')
         self.ax.set_ylabel('Acceleration [m/s^2]')
         self.ax.grid()
 
-        self.xLine = self.ax.plot([], [], color='blue')
+        self.xLine = self.ax.plot([], [], color='darkturquoise')
         self.yLine = self.ax.plot([], [], color='red')
-        self.zLine = self.ax.plot([], [], color='green')
-        self.normLine = self.ax.plot([], [], color='black')
+        self.zLine = self.ax.plot([], [], color='lime')
+        self.normLine = self.ax.plot([], [], color='magenta')
 
         self.fig_agg = self.drawFigure(fig, self.windowMain['-CANVAS-PLOT-'].TKCanvas)
 
