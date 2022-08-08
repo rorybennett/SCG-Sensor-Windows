@@ -13,9 +13,10 @@ import styling as st
 import os
 
 from pathlib import Path
+from datetime import datetime
 
 
-class HeartRateMonitor:
+class SCGSensor:
     def __init__(self):
         # Initial directory creation.
         self.loggingPath = None
@@ -64,9 +65,9 @@ class HeartRateMonitor:
                 self.toggleLogging()
 
             if self.imu.isConnected:
-                self.updateAcceleration()
+                self.windowMain['-TXT-IMU-ACC-'].update(f'{self.imu.getNorm():.2f}')
             if self.imu.enableLogging:
-                self.updateLogCount()
+                self.windowMain['-TXT-LINES-LOGGED-'].update(f'{self.imu.linesLogged}')
 
     def toggleLogging(self):
         """
@@ -76,7 +77,8 @@ class HeartRateMonitor:
             if not self.imu.enableLogging:
                 logFileName = self.windowMain['-INP-FILE-NAME-'].get()
                 if logFileName == '':
-                    logFileName = str(int(time.time() * 1000))
+                    logFileName = str(int(time.time_ns()))
+                    dt
                     self.windowMain['-INP-FILE-NAME-'].update(logFileName)
 
                 if self.doesLogFileExist(logFileName):
@@ -95,27 +97,6 @@ class HeartRateMonitor:
         else:
             print('IMU is not connected.')
 
-    def updateLogCount(self):
-        """
-        Update the log count value.
-        """
-        self.windowMain['-TXT-LINES-LOGGED-'].update(f'{self.imu.linesLogged}')
-
-    def updateAcceleration(self):
-        """
-        Update the acceleration value in the main window (norm of acceleration).
-        """
-        self.windowMain['-TXT-IMU-ACC-'].update(f'{self.imu.getNorm():.2f}')
-
-    def refreshComPorts(self):
-        """
-        Refresh the available COM ports displayed in windowImuConnect. The variable list of available COM ports is
-        updated as well as the drop-down menu/list.
-        """
-        self.availableComPorts = IMU.availableComPorts()
-        # Set elements
-        self.windowImuConnect['-COMBO-COM-PORT-'].update(values=self.availableComPorts)
-
     def doesLogFileExist(self, fileName):
         """
         Check if a log file with the given name already exists.
@@ -125,6 +106,15 @@ class HeartRateMonitor:
         if fileName + '.txt' in logFiles:
             return True
         return False
+
+    def refreshComPorts(self):
+        """
+        Refresh the available COM ports displayed in windowImuConnect. The variable list of available COM ports is
+        updated as well as the drop-down menu/list.
+        """
+        self.availableComPorts = IMU.availableComPorts()
+        # Set elements
+        self.windowImuConnect['-COMBO-COM-PORT-'].update(values=self.availableComPorts)
 
     def showImuConnectWindow(self):
         """
@@ -173,8 +163,7 @@ class HeartRateMonitor:
 
     def updateMenus(self):
         """
-        Helper function that updates the main window's menu based on the current states of the self.frameGrabber and
-        self.imu objects.
+        Update the main window's menu based on the current states of the self.imu object.
         """
         # Set elements.
         self.windowMain['-MENU-'].update(
@@ -182,15 +171,17 @@ class HeartRateMonitor:
 
     def close(self):
         """
-        Delete references to IMU object for garbage collection. This ensures the resources are freed
-        up for future use. Only called as the program is shutting down. The FrameGrabber object is disconnected, the
-        release takes place in the FrameGrabber __del__ method.
+        Delete references to IMU object for garbage collection.
         """
         if self.imu.isConnected:
             self.imu.disconnect()
             del self.imu
 
     def createInitialDirectories(self):
+        """
+        Create the logging directory where the log tests are stored.
+        :return:
+        """
         currentWorkingDirectory = Path.cwd()
 
         self.loggingPath = Path(currentWorkingDirectory, 'logging')
@@ -198,4 +189,4 @@ class HeartRateMonitor:
 
 
 if __name__ == "__main__":
-    HeartRateMonitor()
+    SCGSensor()
