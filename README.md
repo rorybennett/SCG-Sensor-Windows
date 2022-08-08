@@ -45,6 +45,8 @@ so if an acceleration is disabled in the plot it will still be logged. All three
 X-, Y-, and Z-acceleration, but not the norm, as this can be calculated from the logged data. All logged data
 is saved with a time stamp for future reference purposes. 
 
+The data is logged in a .txt file using a csv-type format: timestamp,Ax,Ay,Az.
+
 
 # NB
 
