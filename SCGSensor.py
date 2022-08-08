@@ -33,7 +33,9 @@ class SCGSensor:
         self.bg = None
         self.fig_agg = None
         self.ax = None
-        self.line = None
+        self.zLine = None
+        self.yLine = None
+        self.xLine = None
 
         # IMU object instantiated with default values.
         self.imu = IMU.IMU()
@@ -117,9 +119,15 @@ class SCGSensor:
         if len(self.imu.plotData) > 0:
             data = np.array(self.imu.plotData)
 
-            self.ax.lines[0].remove()
+            self.zLine[0].remove()
+            self.yLine[0].remove()
+            self.xLine[0].remove()
 
-            self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 3], c='green')
+            self.zLine = self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 3], c='green')  # Z
+            self.yLine = self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 2], c='red')  # Y
+            self.xLine = self.ax.plot((data[:, 0] - data[0, 0]) / 1000000000, data[:, 1], c='blue')  # X
+
+            self.ax.relim()
 
             self.fig_agg.draw()
             self.fig_agg.flush_events()
@@ -137,7 +145,9 @@ class SCGSensor:
         self.ax.set_ylabel('Acceleration [m/s^2]')
         self.ax.grid()
 
-        self.line = self.ax.plot([], [], color='green')[0]
+        self.zLine = self.ax.plot([], [], color='green')
+        self.yLine = self.ax.plot([], [], color='red')
+        self.xLine = self.ax.plot([], [], color='blue')
 
         self.fig_agg = self.drawFigure(fig, self.windowMain['-CANVAS-PLOT-'].TKCanvas)
 
