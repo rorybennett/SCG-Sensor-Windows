@@ -37,6 +37,8 @@ class SCGSensor:
         self.yLine = None
         self.zLine = None
         self.normLine = None
+        # Timing variables.
+        self.logStart = None
 
         # IMU object instantiated with default values.
         self.imu = IMU.IMU()
@@ -81,7 +83,19 @@ class SCGSensor:
             if self.imu.isConnected:
                 self.updatePlot()
             if self.imu.enableLogging:
-                self.windowMain['-TXT-LINES-LOGGED-'].update(f'{len(self.imu.logData)}')
+                self.updateLoggingElements()
+
+    def updateLoggingElements(self):
+        """
+        Update logging details while a log test is underway.
+        """
+
+        logEnd = time.time()
+        logElapsed = logEnd - self.logStart
+
+        self.windowMain['-TXT-LOG-ELAPSED-'].update(time.strftime('%H:%M:%S', time.localtime(logElapsed)))
+        self.windowMain['-TXT-LOG-END-'].update(time.strftime('%H:%M:%S', time.localtime(logEnd)))
+        self.windowMain['-TXT-LINES-LOGGED-'].update(f'{len(self.imu.logData)}')
 
     def toggleLogging(self):
         """
@@ -100,6 +114,9 @@ class SCGSensor:
                     logFileName = f'{logFileName}_{int(time.time() * 1000)}'
 
                 self.imu.startLogging(Path(self.loggingPath, logFileName + '.txt'))
+
+                self.logStart = time.time()
+                self.windowMain['-TXT-LOG-START-'].update(time.strftime('%H:%M:%S'))
             else:
                 self.imu.stopLogging()
                 self.windowMain['-INP-FILE-NAME-'].update('')
@@ -165,7 +182,6 @@ class SCGSensor:
         fig.patch.set_facecolor(sg.DEFAULT_BACKGROUND_COLOR)
         self.ax.set_facecolor('black')
 
-        self.ax.set_title('IMU Acceleration')
         self.ax.set_xlabel('Time [s]')
         self.ax.set_ylabel('Acceleration [m/s^2]')
         self.ax.grid()
