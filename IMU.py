@@ -6,6 +6,7 @@ import witmotion as wm
 import time
 import serial.tools.list_ports
 import math
+from datetime import datetime
 
 
 def availableComPorts():
@@ -61,7 +62,8 @@ class IMU:
 
         self.loggingFile = None  # Logging file.
         self.enableLogging = False  # Logging flag.
-        self.linesLogged = 0  # Total lines logged.
+        self.logData = []  # Data to store to log file.
+        self.loggingPath = None  # Path to logging file.
 
     def __del__(self):
         """
@@ -84,9 +86,7 @@ class IMU:
         if msg_type is wm.protocol.AccelerationMessage:
             self.acceleration = self.imu.get_acceleration()
             if self.enableLogging:
-                self.loggingFile.write(f'{int(time.time() * 1000)},'
-                                       f'acc[,{self.acceleration[0]},{self.acceleration[1]},{self.acceleration[2]},]\n')
-                self.linesLogged += 1
+                self.logData.append([time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2]])
         elif msg_type is wm.protocol.QuaternionMessage:
             self.quaternion = self.imu.get_quaternion()
         elif msg_type is wm.protocol.AngleMessage:
@@ -94,20 +94,26 @@ class IMU:
 
     def startLogging(self, filePath):
         """
-        Enable logging. First create and open the required directories and files, then set the logging flag to True.
+        Enable logging. Empty log list first.
         """
-        print(f'Starting logging: {filePath}')
-        self.linesLogged = 0
-        self.loggingFile = open(filePath, 'w')
+        self.loggingPath = filePath
+        print(f'Starting logging: {self.loggingPath}')
+        self.logData = []
         self.enableLogging = True
 
     def stopLogging(self):
         """
         Disable logging. First set logging flag to False, then close logging file.
         """
-        print(f'Stopping logging. Total lines logged: {self.linesLogged}')
+        print(f'Stopping logging. Writing {len(self.logData)} lines to file...')
         self.enableLogging = False
-        self.loggingFile.close()
+        with open(self.loggingPath, 'w') as file:
+            for row in self.logData:
+                dt = datetime.fromtimestamp(row[0] / 1000000000)
+                date = dt.strftime('%d %m %Y %H:%M:%S')
+                date += '.' + str(int(row[0] % 1000000000)).zfill(9)
+                file.write(f'{date},{row[1]},{row[2]},{row[3]},\n')
+        print('Log file completed.')
 
     def getNorm(self) -> float:
         """
