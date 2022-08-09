@@ -21,7 +21,8 @@ bandwidth is set with such a high return rate the IMU returns the same accelerat
 
 ### Basic Operation: IMU Connection
 
-To connect to a WITMOTION IMU select menu 'IMU' -> 'Connect'.
+To connect to a WITMOTION IMU select menu 'IMU' -> 'Connect'. The IMU must first be paired with the computer through 
+Bluetooth Settings.
 
 A second window will pop up where you can choose the COM port and baud rate.
 
