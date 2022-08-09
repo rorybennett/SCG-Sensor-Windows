@@ -4,7 +4,6 @@ Monitor the accelerations produced by a Witmotion IMU. The accelerations are plo
 and can be logged for further analysis. The data stream from the IMU is plotted unaltered: accelerations in the
 X, Y, and Z directions plotted in m/s^2. The acceleration norm is also plotted for reference.
 
-
 ## Hardware Considerations
 
 This project was compiled with specific hardware in mind, but it is not entirely limited to the hardware
@@ -15,7 +14,7 @@ Only the acceleration and the timestamp of the IMU is used, in both plotting and
 channels can be disabled using the Witmotion application: [Witmotion website](https://www.wit-motion.com/).
 
 The Witmotion IMU should be setup to have a maximum bandwidth (256Hz) if a 200Hz return rate is required. If a lower
-bandwidth is set with such a high return the IMU returns the same acceleration values multiple times (up to 5 or 
+bandwidth is set with such a high return the IMU returns the same acceleration values multiple times (up to 5 or
 6 repetitions), a higher bandwidth prevents this from happening.
 
 ## Overview of Program Functionality
@@ -28,7 +27,7 @@ A second window will pop up where you can choose the COM port and baud rate.
 
 Take Note: It is possible for the program to 'connect' to a COM port that does not belong to the IMU.
 Once a connection is successful ensure that there are IMU acceleration values appearing in the main
-window. If you are sure that the correct COM port is being used and there is a problem with the plot, 
+window. If you are sure that the correct COM port is being used and there is a problem with the plot,
 ensure that the IMU has been set up to send acceleration data.
 
 Once connected, the return rate of the IMU can be set and the accelerometer can be calibrated in the
@@ -36,7 +35,7 @@ Once connected, the return rate of the IMU can be set and the accelerometer can 
 
 ### Basic Operation: Plotting
 
-Once the IMU is connected the program will start plotting data immediately. Any of the acceleration values can 
+Once the IMU is connected the program will start plotting data immediately. Any of the acceleration values can
 be removed, or shown, in the displayed plot by deselecting, or selecting, their relevant checkboxes respectively.
 Even when deselected the plotting data is stored in memory,so when it is selected again there is no gap in the plot
 between when it was deselected and reselected.
@@ -52,10 +51,9 @@ plot points and divide by the return rate of the IMU. E.g. 2000 points / 200 Hz 
 Once the IMU is connected, you can log the data that is being sent by the IMU. Logging is independent of plotting,
 so if an acceleration is disabled in the plot it will still be logged. All three acceleration values are logged,
 X-, Y-, and Z-acceleration, but not the norm, as this can be calculated from the logged data. All logged data
-is saved with a time stamp for future reference purposes. 
+is saved with a time stamp for future reference purposes.
 
 The data is logged in a .txt file using a csv-type format: timestamp,Ax,Ay,Az.
-
 
 # NB
 
