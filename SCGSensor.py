@@ -142,7 +142,7 @@ class SCGSensor:
         if len(self.imu.plotData) > 0:
             data = np.array(self.imu.plotData)
 
-            data[:, 0] = (data[:, 0] - data[0, 0]) / 1000000000
+            data[:, 0] = (data[:, 0] - data[0, 0])
 
             if self.windowMain['-BOX-ACC-X-'].get():
                 self.xLine[0].remove()

@@ -64,6 +64,7 @@ class IMU:
         self.enableLogging = False  # Logging flag.
         self.logData = []  # Data to store to log file.
         self.loggingPath = None  # Path to logging file.
+        self.logStartTime = time.time()  # Start time of log for offset.
 
         self.plotSize = 1000  # Number of data points to plot.
         self.plotData = []  # List of data for plotting.
@@ -91,7 +92,7 @@ class IMU:
         if msg_type is wm.protocol.AccelerationMessage:
             self.acceleration = self.imu.get_acceleration()
             if self.acceleration:
-                data = [time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2]]
+                data = [self.imu.get_timestamp(), self.acceleration[0], self.acceleration[1], self.acceleration[2]]
 
                 if self.enableLogging:
                     self.logData.append(data)
@@ -120,6 +121,7 @@ class IMU:
         print(f'Starting logging: {self.loggingPath}')
         self.logData = []
         self.enableLogging = True
+        self.logStartTime = time.time()
 
     def stopLogging(self):
         """
@@ -128,10 +130,13 @@ class IMU:
         print(f'Stopping logging. Writing {len(self.logData)} lines to file...')
         self.enableLogging = False
         with open(self.loggingPath, 'w') as file:
+            timeOffset = self.logData[0][0]
             for row in self.logData:
-                dt = datetime.fromtimestamp(row[0] / 1000000000)
+                convertedTime = (row[0] - timeOffset) + self.logStartTime
+                print(convertedTime)
+                dt = datetime.fromtimestamp(convertedTime)
                 date = dt.strftime('%d %m %Y %H:%M:%S')
-                date += '.' + str(int(row[0] % 1000000000)).zfill(9)
+                date += '.' + str(int((convertedTime * 1000) % 1000))
                 file.write(f'{date},{row[1]},{row[2]},{row[3]}\n')
         print('Log file completed.')
 
@@ -218,5 +223,3 @@ class IMU:
         calibration.
         """
         self.imu.send_config_command(wm.protocol.ConfigCommand(register=wm.protocol.Register.calsw, data=0x01))
-
-
