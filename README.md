@@ -14,7 +14,7 @@ Only the acceleration and the timestamp of the IMU is used, in both plotting and
 channels can be disabled using the Witmotion application: [Witmotion website](https://www.wit-motion.com/).
 
 The Witmotion IMU should be setup to have a maximum bandwidth (256Hz) if a 200Hz return rate is required. If a lower
-bandwidth is set with such a high return the IMU returns the same acceleration values multiple times (up to 5 or
+bandwidth is set with such a high return rate the IMU returns the same acceleration values multiple times (up to 5 or
 6 repetitions), a higher bandwidth prevents this from happening.
 
 ## Overview of Program Functionality
