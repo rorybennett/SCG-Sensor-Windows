@@ -11,8 +11,12 @@ This project was compiled with specific hardware in mind, but it is not entirely
 used. The hardware used when creating this project, beyond the computer running the software, is a BWT901CL
 IMU from Witmotion: [BWT901CL 9-axis](https://www.wit-motion.com/9-axis/witmotion-bluetooth-2-0-mult.html).
 
-Only the acceleration of the IMU is used, in both plotting and data logging, and as such all other channels
-can be disabled using the Witmotion application: [Witmotion website](https://www.wit-motion.com/).
+Only the acceleration and the timestamp of the IMU is used, in both plotting and data logging, and as such all other
+channels can be disabled using the Witmotion application: [Witmotion website](https://www.wit-motion.com/).
+
+The Witmotion IMU should be setup to have a maximum bandwidth (256Hz) if a 200Hz return rate is required. If a lower
+bandwidth is set with such a high return the IMU returns the same acceleration values multiple times (up to 5 or 
+6 repetitions), a higher bandwidth prevents this from happening.
 
 ## Overview of Program Functionality
 
@@ -24,9 +28,8 @@ A second window will pop up where you can choose the COM port and baud rate.
 
 Take Note: It is possible for the program to 'connect' to a COM port that does not belong to the IMU.
 Once a connection is successful ensure that there are IMU acceleration values appearing in the main
-window and that the orientation plot shows an expected orientation for the IMU. If you are sure that
-the correct COM port is being used and there is a problem with the orientation plot, ensure that the
-IMU has been set up to send quaternion data as that is used to calculate orientation.
+window. If you are sure that the correct COM port is being used and there is a problem with the plot, 
+ensure that the IMU has been set up to send acceleration data.
 
 Once connected, the return rate of the IMU can be set and the accelerometer can be calibrated in the
 'IMU' menu item.
@@ -60,5 +63,3 @@ The data is logged in a .txt file using a csv-type format: timestamp,Ax,Ay,Az.
   communication with the IMU: [https://pypi.org/project/witmotion/](https://pypi.org/project/witmotion/).
 - This project/program is run directly from PyCharm, and if any other libraries are required an error
   message will be shown.
-- The Witmotion IMU seems to have trouble at higher return rates, this is currently under investigation. When operating
-  at 200Hz it returns 4 of the same set of values at each time step for some reason.
