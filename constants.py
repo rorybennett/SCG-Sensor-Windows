@@ -1,3 +1,6 @@
+"""
+Constants used throughout the application.
+"""
 # Available return rates for the IMU. The Witmotion library limits the number of return rates that are available.
 IMU_RATE_OPTIONS = [
     "0.2Hz",
@@ -12,6 +15,7 @@ IMU_RATE_OPTIONS = [
     "200Hz"
 ]
 
+# Commonly used baud rates for bluetooth communication.
 COMMON_BAUD_RATES = [
     2400,
     4800,

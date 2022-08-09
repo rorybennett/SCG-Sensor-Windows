@@ -1,14 +1,11 @@
 """
 Main class for logging accelerations for a heart rate monitor.
-
-todo Add link to logging folder.
 """
 
 import PySimpleGUI as sg
 import time
-
 import numpy as np
-
+import subprocess
 import IMU
 import Layout
 import Menu
@@ -86,6 +83,9 @@ class SCGSensor:
             if event == '-SLD-PLOT-POINTS-':
                 self.imu.plotSize = int(values[event])
                 self.windowMain['-TXT-PLOT-POINTS-'].update(f'Points: {self.imu.plotSize}')
+
+            if event == '-TXT-LOG-DIR-':
+                self.openLoggingDirectory()
 
             if self.imu.isConnected:
                 self.updatePlot()
@@ -201,7 +201,6 @@ class SCGSensor:
 
         self.fig_agg = self.drawFigure(fig, self.windowMain['-CANVAS-PLOT-'].TKCanvas)
 
-
     def drawFigure(self, figure, canvas):
         """
         Helper function for integrating matplotlib plots with PySimpleGui. Used to draw the initial canvas.
@@ -283,13 +282,14 @@ class SCGSensor:
         self.windowMain['-MENU-'].update(
             menu_definition=self.menu.getMenu(self.imu.isConnected))
 
-    def close(self):
+    def openLoggingDirectory(self):
         """
-        Delete references to IMU object for garbage collection.
+        Opens Windows explorer at the logging directory.
         """
-        if self.imu.isConnected:
-            self.imu.disconnect()
-            del self.imu
+        try:
+            subprocess.Popen(f'''explorer "{Path(Path.cwd(), 'logging')}"''')
+        except Exception as e:
+            print(f'Error opening logging directory: {e}')
 
     def createInitialDirectories(self):
         """
@@ -300,6 +300,14 @@ class SCGSensor:
 
         self.loggingPath = Path(currentWorkingDirectory, 'logging')
         self.loggingPath.mkdir(parents=True, exist_ok=True)
+
+    def close(self):
+        """
+        Delete references to IMU object for garbage collection.
+        """
+        if self.imu.isConnected:
+            self.imu.disconnect()
+            del self.imu
 
 
 if __name__ == "__main__":
