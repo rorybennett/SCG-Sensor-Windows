@@ -133,7 +133,6 @@ class IMU:
             timeOffset = self.logData[0][0]
             for row in self.logData:
                 convertedTime = (row[0] - timeOffset) + self.logStartTime
-                print(convertedTime)
                 dt = datetime.fromtimestamp(convertedTime)
                 date = dt.strftime('%d %m %Y %H:%M:%S')
                 date += '.' + str(int((convertedTime * 1000) % 1000))
