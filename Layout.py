@@ -37,7 +37,9 @@ class Layout:
         layout = [
             [sg.Col(element_justification='left', layout=[
                 [sg.Menu(k='-MENU-', menu_definition=self.menu.getMenu())],
-                [sg.Canvas(k='-CANVAS-PLOT-')],
+                [sg.Canvas(k='-CANVAS-PLOT-'),
+                 sg.Button(k='-BTN-PLOT-REFRESH-', button_text='Reset Plot', font=st.FONT_BTN, border_width=3,
+                           pad=((5, 0), (10, 5)))],
                 [sg.Col(element_justification='c', expand_x=True, layout=[
                     [sg.Checkbox(k='-BOX-ACC-X-', text='X-Acceleration', default=True, font=st.FONT_DESCR,
                                  pad=(10, 10)),

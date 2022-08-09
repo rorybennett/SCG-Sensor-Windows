@@ -80,6 +80,9 @@ class SCGSensor:
             if event == '-BTN-TOGGLE-LOG-':
                 self.toggleLogging()
 
+            if event == '-BTN-PLOT-REFRESH-':
+                self.imu.resetPlotData()
+
             if self.imu.isConnected:
                 self.updatePlot()
             if self.imu.enableLogging:
@@ -181,6 +184,7 @@ class SCGSensor:
         self.ax = fig.add_subplot(111)
         fig.patch.set_facecolor(sg.DEFAULT_BACKGROUND_COLOR)
         self.ax.set_facecolor('black')
+        self.ax.set_position((0.1, 0.1, 0.9, 0.9))
 
         self.ax.set_xlabel('Time [s]')
         self.ax.set_ylabel('Acceleration [m/s^2]')
@@ -192,6 +196,7 @@ class SCGSensor:
         self.normLine = self.ax.plot([], [], color='magenta')
 
         self.fig_agg = self.drawFigure(fig, self.windowMain['-CANVAS-PLOT-'].TKCanvas)
+
 
     def drawFigure(self, figure, canvas):
         """

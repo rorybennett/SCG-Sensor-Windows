@@ -81,6 +81,8 @@ class IMU:
         activated for every value sent by the IMU (Acceleration, Quaternion, Angle, ..etc) and not just for each serial
         packet.
 
+        The plotting data and logging data are also updated here.
+
         Args:
             msg (String): The type of dataset that is newly available.
         """
@@ -98,11 +100,17 @@ class IMU:
                     [data[0], data[1], data[2], data[3], math.sqrt(data[1] ** 2 + data[2] ** 2 + data[3] ** 2)])
 
                 if len(self.plotData) > self.plotSize:
-                    del self.plotData[0]
+                    del self.plotData[:len(self.plotData) - self.plotSize]
         elif msg_type is wm.protocol.QuaternionMessage:
             self.quaternion = self.imu.get_quaternion()
         elif msg_type is wm.protocol.AngleMessage:
             self.angle = self.imu.get_angle
+
+    def resetPlotData(self):
+        """
+        Clear plot data.
+        """
+        self.plotData = []
 
     def startLogging(self, filePath):
         """
@@ -210,3 +218,5 @@ class IMU:
         calibration.
         """
         self.imu.send_config_command(wm.protocol.ConfigCommand(register=wm.protocol.Register.calsw, data=0x01))
+
+
