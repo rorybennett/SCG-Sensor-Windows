@@ -37,8 +37,8 @@ Once connected, the return rate of the IMU can be set and the accelerometer can 
 ### Basic Operation: Plotting
 
 Once the IMU is connected the program will start plotting data immediately. Any of the acceleration values can
-be removed, or shown, in the displayed plot by deselecting, or selecting, their relevant checkboxes respectively.
-Even when deselected the plotting data is stored in memory,so when it is selected again there is no gap in the plot
+be removed, or shown, in the displayed plot by deselecting, or selecting, their relevant checkboxes.
+Even when deselected the plotting data is stored in memory, so when it is selected again there is no gap in the plot
 between when it was deselected and reselected.
 
 The plot can be reset: The plotting data is cleared before new data is added.
