@@ -37,22 +37,22 @@ class Layout:
         layout = [
             [sg.Col(element_justification='left', layout=[
                 [sg.Menu(k='-MENU-', menu_definition=self.menu.getMenu())],
-                [sg.Canvas(k='-CANVAS-PLOT-'),
-                 sg.Col(vertical_alignment='c', element_justification='c', expand_y=True, layout=[
+                [sg.Canvas(k='-CANVAS-PLOT-', pad=((0, 0), (20, 0))),
+                 sg.Col(vertical_alignment='c', element_justification='c', expand_y=True, pad=((0, 0), (20, 0)), layout=[
                      [sg.Button(k='-BTN-PLOT-REFRESH-', button_text='Reset Plot', font=st.FONT_BTN, border_width=3)],
                      [sg.Slider(k='-SLD-PLOT-POINTS-', default_value=1000, range=(10, 5000), orientation='v',
-                                expand_y=True, enable_events=True, disable_number_display=True)],
-                     [sg.Text(k='-TXT-PLOT-POINTS-', text='Plot Points: 1000', size=(13, 1), font=st.FONT_DESCR)]
+                                size=(19, 15), enable_events=True, disable_number_display=True)],
+                     [sg.Text(k='-TXT-PLOT-POINTS-', text='Points: 1000', size=(10, 1), font=st.FONT_DESCR)]
                  ])],
                 [sg.Col(element_justification='c', expand_x=True, layout=[
                     [sg.Checkbox(k='-BOX-ACC-X-', text='X-Acceleration', default=True, font=st.FONT_DESCR,
-                                 pad=(10, 10)),
+                                 pad=(10, 0)),
                      sg.Checkbox(k='-BOX-ACC-Y-', text='Y-Acceleration', default=True, font=st.FONT_DESCR,
-                                 pad=(10, 10)),
+                                 pad=(10, 0)),
                      sg.Checkbox(k='-BOX-ACC-Z-', text='Z-Acceleration', default=True, font=st.FONT_DESCR,
-                                 pad=(10, 10)),
+                                 pad=(10, 0)),
                      sg.Checkbox(k='-BOX-ACC-NORM-', text='Acceleration Norm', default=True, font=st.FONT_DESCR,
-                                 pad=(10, 10))]
+                                 pad=(10, 0))]
                 ])]])],
             [sg.HSeparator()],
             [sg.Col(element_justification='c', expand_x=True, layout=[

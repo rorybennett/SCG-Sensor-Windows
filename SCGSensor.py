@@ -85,7 +85,7 @@ class SCGSensor:
 
             if event == '-SLD-PLOT-POINTS-':
                 self.imu.plotSize = int(values[event])
-                self.windowMain['-TXT-PLOT-POINTS-'].update(f'Plot Points: {self.imu.plotSize}')
+                self.windowMain['-TXT-PLOT-POINTS-'].update(f'Points: {self.imu.plotSize}')
 
             if self.imu.isConnected:
                 self.updatePlot()
