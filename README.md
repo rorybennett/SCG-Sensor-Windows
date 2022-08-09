@@ -34,9 +34,15 @@ Once connected, the return rate of the IMU can be set and the accelerometer can 
 ### Basic Operation: Plotting
 
 Once the IMU is connected the program will start plotting data immediately. Any of the acceleration values can 
-be removed, or shown, in the displayed plot by selecting or deselecting their relevant checkbox. The plotting
-data is still stored in memory, even if it is deselected, so when it is selected again there is no gap in the plot
+be removed, or shown, in the displayed plot by deselecting, or selecting, their relevant checkboxes respectively.
+Even when deselected the plotting data is stored in memory,so when it is selected again there is no gap in the plot
 between when it was deselected and reselected.
+
+The plot can be reset: The plotting data is cleared before new data is added.
+
+The total number of points to plot can be changed using the slider: At the moment the return rate of the IMU is not
+accessible, so setting a plot size by time is a bit difficult. To calculate expected plot size time take the total
+plot points and divide by the return rate of the IMU. E.g. 2000 points / 200 Hz = 10 seconds of plotting data.
 
 ### Basic Operation: Logging
 
@@ -54,3 +60,5 @@ The data is logged in a .txt file using a csv-type format: timestamp,Ax,Ay,Az.
   communication with the IMU: [https://pypi.org/project/witmotion/](https://pypi.org/project/witmotion/).
 - This project/program is run directly from PyCharm, and if any other libraries are required an error
   message will be shown.
+- The Witmotion IMU seems to have trouble at higher return rates, this is currently under investigation. When operating
+  at 200Hz it returns 4 of the same set of values at each time step for some reason.

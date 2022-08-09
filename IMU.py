@@ -91,7 +91,7 @@ class IMU:
         if msg_type is wm.protocol.AccelerationMessage:
             self.acceleration = self.imu.get_acceleration()
             if self.acceleration:
-                data = [time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2], ]
+                data = [time.time_ns(), self.acceleration[0], self.acceleration[1], self.acceleration[2]]
 
                 if self.enableLogging:
                     self.logData.append(data)
@@ -132,7 +132,7 @@ class IMU:
                 dt = datetime.fromtimestamp(row[0] / 1000000000)
                 date = dt.strftime('%d %m %Y %H:%M:%S')
                 date += '.' + str(int(row[0] % 1000000000)).zfill(9)
-                file.write(f'{date},{row[1]},{row[2]},{row[3]},\n')
+                file.write(f'{date},{row[1]},{row[2]},{row[3]}\n')
         print('Log file completed.')
 
     def getNorm(self) -> float:

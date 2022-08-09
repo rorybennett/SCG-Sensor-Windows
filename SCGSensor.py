@@ -47,7 +47,7 @@ class SCGSensor:
         # IMU connect window
         self.windowImuConnect = None
 
-        self.windowMain = sg.Window('Heart Rate Monitor', self.layout.getMainLayout(), finalize=True,
+        self.windowMain = sg.Window('SCG Sensor Logger', self.layout.getMainLayout(), finalize=True,
                                     use_default_focus=True)
 
         self.createPlot()
@@ -82,6 +82,10 @@ class SCGSensor:
 
             if event == '-BTN-PLOT-REFRESH-':
                 self.imu.resetPlotData()
+
+            if event == '-SLD-PLOT-POINTS-':
+                self.imu.plotSize = int(values[event])
+                self.windowMain['-TXT-PLOT-POINTS-'].update(f'Plot Points: {self.imu.plotSize}')
 
             if self.imu.isConnected:
                 self.updatePlot()
