@@ -44,9 +44,9 @@ class Layout:
                         layout=[
                             [sg.Button(k='-BTN-PLOT-REFRESH-', button_text='Reset Plot', font=st.FONT_BTN,
                                        border_width=3)],
-                            [sg.Slider(k='-SLD-PLOT-POINTS-', default_value=1000, range=(10, 5000), orientation='v',
+                            [sg.Slider(k='-SLD-PLOT-POINTS-', default_value=1000, range=(10, 10000), orientation='v',
                                        size=(19, 15), enable_events=True, disable_number_display=True)],
-                            [sg.Text(k='-TXT-PLOT-POINTS-', text='Points: 1000', size=(10, 1), font=st.FONT_DESCR)]
+                            [sg.Text(k='-TXT-PLOT-POINTS-', text='Points: 1000', size=(11, 1), font=st.FONT_DESCR)]
                         ])],
                 [sg.Col(element_justification='c', expand_x=True, layout=[
                     [sg.Checkbox(k='-BOX-ACC-X-', text='X-Acceleration', default=True, font=st.FONT_DESCR,
