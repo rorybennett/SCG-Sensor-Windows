@@ -28,3 +28,20 @@ COMMON_BAUD_RATES = [
     460800,
     576000
 ]
+
+# Available bandwidths for the IMU. Higher bandwidths should be used with higher return rates.
+IMU_BANDWIDTH_OPTIONS = [
+    "256Hz",
+    "188Hz",
+    "98Hz",
+    "42Hz",
+    "20Hz",
+    "10Hz",
+    "5Hz"
+]
+
+# Available algorithms for the IMU, either 6-axis (without magnetometer) or 9-axis.
+IMU_ALGORITHM_OPTIONS = [
+    '6-Axis (without magnetometer)',
+    '9-Axis (with magnetometer)'
+]

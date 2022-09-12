@@ -48,12 +48,16 @@ class Menu:
             self.imuImenu = ['IMU', ['Connect::-MENU-IMU-CONNECT-',
                                      '---',
                                      '!Set Return Rate',
+                                     '!Set Bandwidth',
+                                     '!Set Algorithm',
                                      '!Calibrate Acceleration::-MENU-IMU-CALIBRATE-']
                              ]
         if self.imuConnected:
             self.imuImenu = ['IMU', ['Disconnect::-MENU-IMU-DISCONNECT-',
                                      '---',
                                      'Set Return Rate', [f'{i}::-MENU-IMU-RATE-' for i in c.IMU_RATE_OPTIONS],
+                                     'Set Bandwidth', [f'{i}::-MENU-IMU-BANDWIDTH-' for i in c.IMU_BANDWIDTH_OPTIONS],
+                                     'Set Algorithm', [f'{i}::-MENU-IMU-ALGORITHM-' for i in c.IMU_ALGORITHM_OPTIONS],
                                      'Calibrate Acceleration::-MENU-IMU-CALIBRATE-']
                              ]
 
